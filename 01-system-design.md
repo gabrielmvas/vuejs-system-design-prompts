@@ -1,61 +1,58 @@
-Prompt 1: Design System Setup (Vue/Nuxt Edition)
+# Prompt 1: Design System Setup (Vue/Nuxt Edition)
 
 Analyze this design screenshot, extract design tokens, and set up a complete design system with shadcn-vue.
 
-Input
-[SCREENSHOT FROM DRIBBBLE, BEHANCE, OR ANY DESIGN INSPIRATION]
+## Input
 
-Workflow
-1. Analyze the Design
+`[SCREENSHOT FROM DRIBBBLE, BEHANCE, OR ANY DESIGN INSPIRATION]`
+
+## Workflow
+
+### 1. Analyze the Design
+
 Look at the image and identify/infer:
 
-Colors:
+**Colors**
 
-Primary/brand color → generate full scale (50-900)
+- Primary/brand color → generate full scale (50-900)
+- Neutral/grey colors → generate full scale (50-900)
+- Semantic colors (success, error, warning, info)
+- Background and surface colors
+- Border colors
 
-Neutral/grey colors → generate full scale (50-900)
+**Typography**
 
-Semantic colors (success, error, warning, info)
+- Font family (sans-serif, serif, monospace)
+- Heading sizes and weights
+- Body text sizes
 
-Background and surface colors
+**Spacing & Radius**
 
-Border colors
+- Spacing rhythm (tight, normal, relaxed)
+- Border radius style (sharp, rounded, pill)
 
-Typography:
+**Shadows**
 
-Font family (sans-serif, serif, monospace)
+- Shadow style (none, subtle, prominent)
 
-Heading sizes and weights
+### 2. Initialize shadcn-vue
 
-Body text sizes
-
-Spacing & Radius:
-
-Spacing rhythm (tight, normal, relaxed)
-
-Border radius style (sharp, rounded, pill)
-
-Shadows:
-
-Shadow style (none, subtle, prominent)
-
-2. Initialize shadcn-vue
-Bash
+```bash
 npx shadcn-vue@latest init
+```
+
 When prompted:
 
-Framework: Nuxt
+- Framework: Nuxt
+- Style: Default
+- Base color: Neutral (we'll override with our tokens)
+- CSS variables: Yes
 
-Style: Default
+### 3. Generate and Apply tailwind.css
 
-Base color: Neutral (we'll override with our tokens)
+Replace `assets/css/tailwind.css` with extracted design tokens:
 
-CSS variables: Yes
-
-3. Generate and Apply tailwind.css
-Replace assets/css/tailwind.css with extracted design tokens:
-
-CSS
+```css
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -145,12 +142,17 @@ CSS
     font-family: '[extracted font]', sans-serif;
   }
 }
-4. Install Recommended Font
-If a Google Font matches the design, add it to your nuxt.config.ts using @nuxtjs/google-fonts:
+```
 
-Bash
+### 4. Install Recommended Font
+
+If a Google Font matches the design, add it to your `nuxt.config.ts` using `@nuxtjs/google-fonts`:
+
+```bash
 npm install -D @nuxtjs/google-fonts
-TypeScript
+```
+
+```ts
 // nuxt.config.ts
 export default defineNuxtConfig({
   modules: [
@@ -163,15 +165,21 @@ export default defineNuxtConfig({
     }
   }
 })
-5. Install Demo Components
+```
+
+### 5. Install Demo Components
+
 Use shadcn-vue to install components for the styleguide:
 
-Bash
+```bash
 npx shadcn-vue@latest add button card badge alert radio-group
-6. Create Styleguide Navigation Config
-Create utils/navigation.ts to manage styleguide navigation:
+```
 
-TypeScript
+### 6. Create Styleguide Navigation Config
+
+Create `utils/navigation.ts` to manage styleguide navigation:
+
+```ts
 export interface NavItem {
   name: string
   href: string
@@ -196,10 +204,13 @@ export const navigation: NavSection[] = [
     ]
   }
 ]
-7. Create Styleguide Layout with Sidebar
-Create layouts/styleguide.vue with a sidebar that reads from the navigation config:
+```
 
-Snippet de código
+### 7. Create Styleguide Layout with Sidebar
+
+Create `layouts/styleguide.vue` with a sidebar that reads from the navigation config:
+
+```vue
 <script setup lang="ts">
 import { useRoute } from 'vue-router'
 import { navigation } from '~/utils/navigation'
@@ -246,10 +257,13 @@ const route = useRoute()
     </main>
   </div>
 </template>
-8. Create Styleguide Page
-Create pages/styleguide/index.vue displaying ALL design tokens in one page. Make sure to wrap it in the new layout:
+```
 
-Snippet de código
+### 8. Create Styleguide Page
+
+Create `pages/styleguide/index.vue` displaying ALL design tokens in one page. Make sure to wrap it in the new layout:
+
+```vue
 <script setup lang="ts">
 definePageMeta({
   layout: 'styleguide'
@@ -259,29 +273,25 @@ definePageMeta({
 
 <template>
   <div class="p-8">
-    </div>
+  </div>
 </template>
+```
+
 Ensure it includes:
 
-Color palette - All colors as swatches with CSS variable names
+- Color palette — all colors as swatches with CSS variable names
+- Primary scale — 50 through 900
+- Grey scale — 50 through 900
+- Semantic colors — success, warning, error, info
+- Typography — heading and body text samples
+- Border radius — examples of each size
+- Shadows — shadow examples
+- Components — button, card, badge, alert, radio group using the tokens
+- Dark mode toggle — preview both themes
 
-Primary scale - 50 through 900
+## Directory Structure
 
-Grey scale - 50 through 900
-
-Semantic colors - Success, warning, error, info
-
-Typography - Heading and body text samples
-
-Border radius - Examples of each size
-
-Shadows - Shadow examples
-
-Components - Button, Card, Badge, Alert, Radio Group using the tokens
-
-Dark mode toggle - Preview both themes
-
-Directory Structure
+```text
 ├── assets/
 │   └── css/
 │       └── tailwind.css     # Complete design tokens
@@ -294,45 +304,34 @@ Directory Structure
 │           └── [name].vue   # Individual components (added by Prompt 2)
 └── utils/
     └── navigation.ts        # Navigation config (editable by Prompt 2)
-Output
-shadcn-vue initialized
+```
 
-assets/css/tailwind.css with complete design tokens
+## Output
 
-Font installed via Nuxt config
+- shadcn-vue initialized
+- `assets/css/tailwind.css` with complete design tokens
+- Font installed via Nuxt config
+- Demo components installed (button, card, badge, alert, radio-group)
+- Styleguide with navigable sidebar:
+  - `layouts/styleguide.vue` — layout with sidebar
+  - `utils/navigation.ts` — navigation config
+  - `pages/styleguide/index.vue` — all design tokens
+- Design system ready for Prompt 2 (components) and Prompt 3 (pages)
 
-Demo components installed (button, card, badge, alert, radio-group)
+## Design Summary (also provide)
 
-Styleguide with navigable sidebar:
-
-layouts/styleguide.vue - Layout with sidebar
-
-utils/navigation.ts - Navigation config
-
-pages/styleguide/index.vue - All design tokens
-
-Design system ready for Prompt 2 (components) and Prompt 3 (pages)
-
-Design Summary (also provide)
 After setup, summarize:
 
-Primary color: [hex and color name]
+- Primary color: `[hex and color name]`
+- Font: `[font name]`
+- Style: `[e.g., "Modern minimal", "Bold colorful", "Soft friendly"]`
+- Border radius: `[e.g., "Rounded 8px", "Sharp", "Pill"]`
+- Overall feel: `[brief description]`
 
-Font: [font name]
+## Notes
 
-Style: [e.g., "Modern minimal", "Bold colorful", "Soft friendly"]
-
-Border radius: [e.g., "Rounded 8px", "Sharp", "Pill"]
-
-Overall feel: [brief description]
-
-Notes
-If colors aren't clearly visible, make reasonable inferences
-
-Generate harmonious color scales using color theory
-
-Ensure sufficient contrast for accessibility (4.5:1 for text)
-
-Chart colors should be visually distinct
-
-When in doubt, use shadcn-vue defaults as fallback
+- If colors aren't clearly visible, make reasonable inferences
+- Generate harmonious color scales using color theory
+- Ensure sufficient contrast for accessibility (4.5:1 for text)
+- Chart colors should be visually distinct
+- When in doubt, use shadcn-vue defaults as fallback

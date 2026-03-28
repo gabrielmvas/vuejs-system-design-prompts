@@ -1,62 +1,57 @@
-Prompt 2: Component Development (Vue/Nuxt Edition)
-Add a [COMPONENT NAME] to the project using shadcn-vue.
+# Prompt 2: Component Development (Vue/Nuxt Edition)
 
-Workflow
-1. Check if Component Exists in shadcn-vue
+Add a **[COMPONENT NAME]** to the project using shadcn-vue.
+
+## Workflow
+
+### 1. Check if Component Exists in shadcn-vue
+
 Use shadcn MCP to search the registry:
 
-Search for the component: search_items_in_registries with query "[component name]"
+- **Search** for the component: `search_items_in_registries` with query `[component name]`
+- **If found** → view details: `view_items_in_registries` to see structure and dependencies
+- **Get usage examples**: `get_item_examples_from_registries` with query `[component]-demo`
 
-If found → view details: view_items_in_registries to see structure and dependencies
+**Decision:**
 
-Get usage examples: get_item_examples_from_registries with query "[component]-demo"
+- Component exists → go to Step 2 (Install)
+- Component doesn't exist → go to Step 4 (Build Custom)
 
-Decision:
+**Common shadcn-vue components:**
 
-Component exists → go to Step 2 (Install)
+- **Layout:** Card, Separator, Tabs, Accordion, Collapsible
+- **Forms:** Button, Input, Select, Checkbox, Radio Group, Switch, Textarea, Label, Form
+- **Feedback:** Alert, Toast, Progress, Skeleton, Badge
+- **Overlay:** Dialog, Drawer, Popover, Tooltip, Dropdown Menu, Context Menu, Alert Dialog
+- **Navigation:** Navigation Menu, Breadcrumb, Pagination, Command
+- **Data:** Table, Data Table, Calendar, Chart
 
-Component doesn't exist → go to Step 4 (Build Custom)
+### 2. Install shadcn-vue Component
 
-Common shadcn-vue components:
-
-Layout: Card, Separator, Tabs, Accordion, Collapsible
-
-Forms: Button, Input, Select, Checkbox, Radio Group, Switch, Textarea, Label, Form
-
-Feedback: Alert, Toast, Progress, Skeleton, Badge
-
-Overlay: Dialog, Drawer, Popover, Tooltip, Dropdown Menu, Context Menu, Alert Dialog
-
-Navigation: Navigation Menu, Breadcrumb, Pagination, Command
-
-Data: Table, Data Table, Calendar, Chart
-
-2. Install shadcn-vue Component
 Get the install command using shadcn MCP:
 
-get_add_command_for_items for the component
+- `get_add_command_for_items` for the component
 
 Run the command:
 
-Bash
+```bash
 npx shadcn-vue@latest add [component-name]
-This adds the component to components/ui/.
-It automatically uses CSS variables from assets/css/tailwind.css.
+```
 
-Review the installed component to understand:
+This adds the component to `components/ui/`. It automatically uses CSS variables from `assets/css/tailwind.css`.
 
-Available variants (size, style, etc.)
+**Review the installed component to understand:**
 
-Props interface
+- Available variants (size, style, etc.)
+- Props interface
+- How it uses CSS variables
+- Emitted events (if applicable)
 
-How it uses CSS variables
+### 3. Customize Component (if needed)
 
-Emitted events (if applicable)
+If the base component needs additional variants or behavior, create a wrapped version in `components/Custom[ComponentName].vue`:
 
-3. Customize Component (if needed)
-If the base component needs additional variants or behavior, create a wrapped version in components/Custom[ComponentName].vue:
-
-Snippet de código
+```vue
 <script setup lang="ts">
 import { Button } from '@/components/ui/button'
 import { cn } from '@/lib/utils'
@@ -85,28 +80,26 @@ const props = withDefaults(defineProps<Props>(), {
     <slot />
   </Button>
 </template>
-Customization patterns:
+```
 
-Add new color variants using your CSS variables (bg-success, text-warning, etc.)
+**Customization patterns:**
 
-Add new size variants
+- Add new color variants using your CSS variables (`bg-success`, `text-warning`, etc.)
+- Add new size variants
+- Compose multiple shadcn-vue components together
+- Add loading states, icons, or other features via slots and props
 
-Compose multiple shadcn-vue components together
+### 4. Build Custom Component (if not in shadcn-vue)
 
-Add loading states, icons, or other features via slots and props
-
-4. Build Custom Component (if not in shadcn-vue)
 If shadcn-vue doesn't have this component, build it using:
 
-Vue/Radix primitives as building blocks
+- Vue/Radix primitives as building blocks
+- CSS variables via Tailwind classes
+- shadcn-vue's patterns for consistency
 
-CSS variables via Tailwind classes
+Create `components/CustomWidget.vue`:
 
-shadcn-vue's patterns for consistency
-
-Create components/CustomWidget.vue:
-
-Snippet de código
+```vue
 <script setup lang="ts">
 import { cn } from '@/lib/utils'
 
@@ -131,42 +124,38 @@ const props = withDefaults(defineProps<Props>(), {
     <slot />
   </div>
 </template>
-5. Create Component Showcase
-Add to pages/styleguide/components/[component-name].vue:
+```
 
-Define the layout metadata (definePageMeta({ layout: 'styleguide' }))
+### 5. Create Component Showcase
 
-All variants side by side (sizes, colors, styles)
+Add to `pages/styleguide/components/[component-name].vue`:
 
-All states (default, hover, focus, disabled, loading)
+- Define the layout metadata (`definePageMeta({ layout: 'styleguide' })`)
+- All variants side by side (sizes, colors, styles)
+- All states (default, hover, focus, disabled, loading)
+- Dark mode preview (toggle between light/dark)
+- Interactive demo with prop controls (using Vue `ref` or `reactive`)
+- Code examples for common use cases
 
-Dark mode preview (toggle between light/dark)
+Use examples from shadcn MCP (`get_item_examples_from_registries`) as reference.
 
-Interactive demo with prop controls (using Vue ref or reactive)
+### 6. Document Usage
 
-Code examples for common use cases
-
-Use examples from shadcn MCP (get_item_examples_from_registries) as reference.
-
-6. Document Usage
 Include in the showcase page:
 
-Import statement
+- Import statement
+- Basic usage example with `<template>` block
+- All available props with types and defaults
+- Variant examples with code
+- Accessibility notes (keyboard navigation, ARIA attributes)
 
-Basic usage example with <template> block
+### 7. Update Styleguide Navigation
 
-All available props with types and defaults
+Add the new component to `utils/navigation.ts`.
 
-Variant examples with code
+In the **Components** section, add a new entry:
 
-Accessibility notes (keyboard navigation, ARIA attributes)
-
-7. Update Styleguide Navigation
-Add the new component to utils/navigation.ts:
-
-In the "Components" section, add a new entry:
-
-TypeScript
+```typescript
 {
   title: "Components",
   items: [
@@ -174,9 +163,13 @@ TypeScript
     { name: "[Component Name]", href: "/styleguide/components/[component-name]" },
   ]
 }
+```
+
 This makes the component appear in the styleguide sidebar navigation.
 
-Directory Structure
+## Directory Structure
+
+```text
 components/
 ├── ui/                    # Base shadcn-vue components (auto-generated)
 │   ├── button/
@@ -192,24 +185,20 @@ pages/
 
 utils/
 └── navigation.ts          # Navigation config updated here
-Output
-Component installed/created in components/
+```
 
-Showcase page in pages/styleguide/components/[name].vue
+## Output
 
-Navigation updated in utils/navigation.ts
+- Component installed/created in `components/`
+- Showcase page in `pages/styleguide/components/[name].vue`
+- Navigation updated in `utils/navigation.ts`
+- Component visible in styleguide sidebar
+- Usage documented with code examples
 
-Component visible in styleguide sidebar
+## Notes
 
-Usage documented with code examples
-
-Notes
-Use shadcn MCP to search, view, and get examples before building
-
-CSS variables are the source of truth (defined in assets/css/tailwind.css)
-
-Tailwind classes reference CSS variables (bg-primary, text-muted-foreground)
-
-No Figma needed for component development - shadcn defines the design
-
-Extend, don't rebuild - customize shadcn-vue components rather than building from scratch
+- Use shadcn MCP to search, view, and get examples before building
+- CSS variables are the source of truth (defined in `assets/css/tailwind.css`)
+- Tailwind classes reference CSS variables (`bg-primary`, `text-muted-foreground`)
+- No Figma needed for component development — shadcn defines the design
+- Extend, don't rebuild — customize shadcn-vue components rather than building from scratch
